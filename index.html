@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Новости СКПиСО | Главная</title>
+    <style>
+        /* ---------- ГЛОБАЛЬНЫЕ СБРОСЫ И ПЕРЕМЕННЫЕ ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0c10;
+            --card-bg: rgba(20, 24, 32, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --primary-glow: #2c7da0;
+            --primary: #2a9d8f;
+            --primary-light: #52b788;
+            --accent: #e9c46a;
+            --text-light: #f0f3fa;
+            --text-dim: #b9c3db;
+            --success: #2a9d8f;
+            --gradient-1: linear-gradient(135deg, #2c7da0, #2a9d8f);
+            --gradient-2: linear-gradient(120deg, #2a9d8f, #e9c46a);
+            --shadow-sm: 0 8px 20px rgba(0,0,0,0.3);
+            --shadow-md: 0 15px 35px rgba(0,0,0,0.35);
+            --border-radius-card: 28px;
+            --border-radius-element: 60px;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            color: var(--text-light);
+            line-height: 1.5;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e1f2c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 8px;
+        }
+
+        a, button {
+            transition: all 0.25s ease;
+        }
+
+        /* ----- АНИМИРОВАННЫЙ ФОН ----- */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+            background: radial-gradient(circle at 20% 30%, #0f111a, #05060a);
+        }
+
+        .orb {
+            position: absolute;
+            background: radial-gradient(circle, rgba(42,157,143,0.2) 0%, rgba(42,157,143,0) 70%);
+            border-radius: 50%;
+            filter: blur(60px);
+            animation: floatOrb 22s infinite alternate ease-in-out;
+        }
+
+        .orb1 {
+            width: 60vw;
+            height: 60vw;
+            top: -10%;
+            left: -20%;
+            background: radial-gradient(circle, rgba(44,125,160,0.25), transparent);
+        }
+        .orb2 {
+            width: 50vw;
+            height: 50vw;
+            bottom: -15%;
+            right: -10%;
+            background: radial-gradient(circle, rgba(233,196,106,0.2), transparent);
+            animation-duration: 28s;
+        }
+        .orb3 {
+            width: 40vw;
+            height: 40vw;
+            top: 40%;
+            left: 60%;
+            background: radial-gradient(circle, rgba(42,157,143,0.15), transparent);
+            animation-duration: 18s;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1);}
+            100% { transform: translate(5%, 7%) scale(1.1);}
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 32px;
+            position: relative;
+        }
+
+        /* ----- НАВИГАЦИЯ (только Главная) ----- */
+        .navbar {
+            position: sticky;
+            top: 24px;
+            z-index: 100;
+            backdrop-filter: blur(16px);
+            background: rgba(10, 12, 18, 0.65);
+            border: 1px solid var(--glass-border);
+            border-radius: 80px;
+            margin: 24px auto 0;
+            max-width: 1100px;
+            padding: 8px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dim);
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .nav-links a:hover {
+            color: white;
+            text-shadow: 0 0 6px rgba(42,157,143,0.4);
+        }
+
+        .nav-btn {
+            background: var(--gradient-1);
+            border: none;
+            padding: 3px 15px;
+            border-radius: var(--border-radius-element);
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(42,157,143,0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(42,157,143,0.4);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            border: none;
+            padding: 10px 26px;
+            border-radius: var(--border-radius-element);
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid var(--primary);
+            padding: 10px 26px;
+            border-radius: var(--border-radius-element);
+            font-weight: 600;
+            color: var(--primary-light);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-outline:hover {
+            background: rgba(42,157,143,0.15);
+            border-color: var(--primary-light);
+        }
+
+        /* ----- ГЕРОЙ СЕКЦИЯ — ПО ЦЕНТРУ (ИСПРАВЛЕНО) ----- */
+        .hero {
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: 20px 0 40px;
+        }
+
+        .hero-grid {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            width: 100%;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            background: rgba(42,157,143,0.2);
+            backdrop-filter: blur(4px);
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            display: inline-block;
+            color: var(--primary-light);
+            margin-bottom: 24px;
+            border: 1px solid rgba(42,157,143,0.3);
+        }
+
+        .hero-content h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #fff, #c0f0e8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: #2a9d8f;
+        }
+
+        .hero-desc {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            max-width: 650px;
+            margin: 0 auto 32px auto;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 24px 18px;
+            text-align: center;
+            min-width: 130px;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(42,157,143,0.5);
+            background: rgba(30, 34, 48, 0.8);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* ----- ПОДПИСКА / ФОРМА ----- */
+        .newsletter {
+            background: linear-gradient(115deg, #10131f, #07090f);
+            border-radius: 56px;
+            padding: 48px 40px;
+            text-align: center;
+            border: 1px solid rgba(42,157,143,0.3);
+        }
+
+        .form-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .form-group input {
+            padding: 14px 24px;
+            border-radius: 60px;
+            border: 1px solid var(--glass-border);
+            background: rgba(0,0,0,0.4);
+            color: white;
+            width: 280px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+        }
+
+        /* ----- ФУТЕР ----- */
+        footer {
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding: 48px 0 32px;
+            margin-top: 40px;
+        }
+
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 32px;
+        }
+
+        .copyright {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            margin-top: 48px;
+            text-align: center;
+        }
+
+        @media (max-width: 850px) {
+            .navbar {
+                flex-direction: column;
+                gap: 12px;
+                padding: 16px;
+                border-radius: 40px;
+                top: 12px;
+            }
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            .container {
+                padding: 0 20px;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .hero-stats {
+                width: 100%;
+                justify-content: space-evenly;
+            }
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.6s forwards;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+    </style>
+
+    <link rel="stylesheet" href="font.css">
+</head>
+<body>
+
+<div class="animated-bg">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+</div>
+
+<nav class="navbar container">
+    <div class="logo">📰 Новости СКПиСО</div>
+    <ul class="nav-links">
+        <a href="index.html" class="nav-btn">Главная</a>
+        <a href="news.html" class="nav-btn">Новости</a>
+    </ul>
+    <button class="btn-primary" id="navCtaBtn">Подписаться</button>
+</nav>
+
+<main>
+    <!-- Hero секция — теперь по центру! -->
+    <section class="hero container">
+        <div class="hero-grid">
+            <div class="hero-content fade-up">
+                <span class="hero-badge">✨ Актуально • Достоверно • Оперативно</span>
+                <h1>Новости СКПиСО<br> всегда на связи</h1>
+                <p class="hero-desc">Главные события, аналитика и репортажи. Будьте в курсе всех важных новостей из мира СКПиСО.</p>
+                <div class="cta-group">
+                    <button class="btn-primary" id="heroBtn">Читать новости</button>
+                </div>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-card fade-up delay-1">
+                    <div class="stat-number">24/7</div>
+                    <div>Новостные сводки</div>
+                    <small style="color:#aaa">Круглосуточно</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Форма подписки -->
+    <section id="contact" class="section container">
+        <div class="newsletter">
+            <h2 style="font-size: 2rem;">📬 Подпишитесь на рассылку</h2>
+            <p style="margin-top: 8px;">Первыми получайте самые важные новости СКПиСО</p>
+            <div class="form-group">
+                <input type="email" placeholder="Ваш e-mail" id="emailInput">
+                <button class="btn-primary" id="subscribeBtn">Подписаться</button>
+            </div>
+            <p id="subscribeMsg" style="margin-top: 20px; font-size:0.9rem; color:#a3e4d7;"></p>
+        </div>
+    </section>
+</main>
+
+<footer class="container">
+    <div class="footer-grid">
+        <div>
+            <div class="logo" style="font-size: 1.8rem;">📰 Новости СКПиСО</div>
+            <p style="margin-top: 12px; max-width: 260px;">Оперативно, достоверно, независимо. Все главные новости в одном месте.</p>
+        </div>
+        <div>
+            <h4>Разделы</h4>
+            <ul style="list-style: none; margin-top: 12px;">
+                <li><a href="index.html" style="color: var(--text-dim); text-decoration: none;">Главная</a></li>
+                <li><a href="news.html" style="color: var(--text-dim); text-decoration: none;">Новости</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Контакты</h4>
+            <p style="margin-top: 12px;">press@skpiso.ru</p>
+            <p>+7 (495) 123-45-67</p>
+        </div>
+    </div>
+    <div class="copyright">
+        © 2026 — Новости СКПиСО. Все права защищены.
+    </div>
+</footer>
+
+<script>
+    (function() {
+        // подписка
+        const subBtn = document.getElementById('subscribeBtn');
+        const emailInput = document.getElementById('emailInput');
+        const msgDiv = document.getElementById('subscribeMsg');
+        if(subBtn) {
+            subBtn.addEventListener('click', () => {
+                const email = emailInput.value.trim();
+                if(email === '' || !email.includes('@') || !email.includes('.')) {
+                    msgDiv.innerHTML = '❌ Пожалуйста, введите корректный email.';
+                    msgDiv.style.color = '#ff7675';
+                } else {
+                    msgDiv.innerHTML = '✅ Вы успешно подписаны на новости СКПиСО!';
+                    msgDiv.style.color = '#2a9d8f';
+                    emailInput.value = '';
+                    setTimeout(() => {
+                        msgDiv.innerHTML = '';
+                    }, 3000);
+                }
+            });
+        }
+
+        // Кнопки
+        const heroBtn = document.getElementById('heroBtn');
+        if(heroBtn) {
+            heroBtn.addEventListener('click', () => {
+                window.location.href = 'news.html';
+            });
+        }
+        const demoBtn = document.getElementById('demoBtn');
+        const navCta = document.getElementById('navCtaBtn');
+        if(heroBtn) {
+            heroBtn.addEventListener('click', () => {
+                document.getElementById('news')?.scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+        if(demoBtn) {
+            demoBtn.addEventListener('click', () => {
+                alert('📰 Новости СКПиСО — всегда актуальная информация. Следите за обновлениями!');
+            });
+        }
+        if(navCta) {
+            navCta.addEventListener('click', () => {
+                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+
+        // плавная навигация для ссылки "Главная"
+        const homeLink = document.querySelector('.nav-links a');
+        if(homeLink) {
+            homeLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        // ссылки внутри футера
+        const footerLinks = document.querySelectorAll('.footer-grid a');
+        footerLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const href = link.getAttribute('href');
+                if(href === '#') {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else if(href && href.startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if(target) target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    })();
+</script>
+</body>
+</html>
